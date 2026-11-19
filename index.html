@@ -522,6 +522,12 @@ function norm(s){
   return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 }
 
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
 function buildTabs(){
   const nav = document.getElementById("tabs");
   nav.innerHTML = "";
@@ -602,7 +608,7 @@ function render(){
       <div class="panel-head">
         <div class="panel-title">
           <div class="panel-badge" style="background:var(--m)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
-          <div><h2>Resultados de búsqueda</h2><p>${results.length} diagnóstico${results.length===1?"":"s"} encontrados para "${q}"</p></div>
+          <div><h2>Resultados de búsqueda</h2><p>${results.length} diagnóstico${results.length===1?"":"s"} encontrados para "${escapeHtml(q)}"</p></div>
         </div>
       </div>
       <div class="grid">${results.map(r=>cardHTML(r,q)).join("")}</div>
